@@ -7,12 +7,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,6 +20,7 @@ import com.bits.assignment.universalt10.connector.connectorservice.model.BMI;
 import com.bits.assignment.universalt10.connector.connectorservice.model.BloodPressure;
 import com.bits.assignment.universalt10.connector.connectorservice.model.OxygenLevel;
 import com.bits.assignment.universalt10.connector.connectorservice.model.PatientData;
+import com.bits.assignment.universalt10.connector.connectorservice.model.SimpleMessage;
 import com.bits.assignment.universalt10.connector.connectorservice.model.SleepTracking;
 import com.bits.assignment.universalt10.connector.connectorservice.model.StepCount;
 import com.bits.assignment.universalt10.connector.connectorservice.model.Temperature;
@@ -216,7 +217,7 @@ public class ConnectorServiceImpl implements ConnectorService {
 	@Override
 	public Temperature createTemperatureRecord(Temperature temperature) {
 		// TODO Auto-generated method stub
-		return temperatureRepository.save(null);
+		return temperatureRepository.save(temperature);
 	}
 
 	@Override
@@ -410,6 +411,7 @@ public class ConnectorServiceImpl implements ConnectorService {
 	public void sendData(String patientId) {
 		String url = "http://localhost:9007/edge-patient-monitoring-service/monitor";
 		PatientData data = new PatientData();
+		data.setPatientId(patientId);
 		List<BloodPressure> list = bloodPressureRepository.findByPatientId(patientId);
 		if (list != null && !list.isEmpty()) {
 			data.setBloodPressure(list.get(0).getValue());
@@ -438,7 +440,7 @@ public class ConnectorServiceImpl implements ConnectorService {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		HttpEntity<PatientData> request = new HttpEntity<>(data, headers);
-		restTemplate.postForEntity(url, request, SimpleMessage.class);
+		ResponseEntity<SimpleMessage> entity = restTemplate.postForEntity(url, request, SimpleMessage.class);
 
 	}
 

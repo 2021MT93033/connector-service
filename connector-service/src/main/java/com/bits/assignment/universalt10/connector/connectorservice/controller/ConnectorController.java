@@ -9,7 +9,6 @@ import java.util.List;
 import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity.HeadersBuilder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -348,43 +347,43 @@ public class ConnectorController {
 	@DeleteMapping("/bloodPressure/{id}")
 	public ResponseEntity<?> deleteBloodPressure(@PathVariable String id) throws Exception {
 		service.deleteBloodPressureRecord(id);
-		return (ResponseEntity<?>) ResponseEntity.noContent();
+		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/bmi/{id}")
 	public ResponseEntity<?> deleteBMI(@PathVariable String id) throws Exception {
 		service.deleteBMIRecord(id);
-		return (ResponseEntity<?>) ResponseEntity.noContent();
+		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/oxygenLevel/{id}")
 	public ResponseEntity<?> deleteOxygenLevel(@PathVariable String id) throws Exception {
 		service.deleteOxygenLevelRecord(id);
-		return (ResponseEntity<?>) ResponseEntity.noContent();
+		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/sleepTracking/{id}")
 	public ResponseEntity<?> deleteSleepTracking(@PathVariable String id) throws Exception {
 		service.deleteSleepTrackingRecord(id);
-		return (ResponseEntity<?>) ResponseEntity.noContent();
+		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/stepCount/{id}")
 	public ResponseEntity<?> deleteStepCount(@PathVariable String id) throws Exception {
 		service.deleteStepCountRecord(id);
-		return (ResponseEntity<?>) ResponseEntity.noContent();
+		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/temperature/{id}")
 	public ResponseEntity<?> deleteTemperature(@PathVariable String id) throws Exception {
 		service.deleteTemperatureRecord(id);
-		return (ResponseEntity<?>) ResponseEntity.noContent();
+		return ResponseEntity.noContent().build();
 	}
 
 	@PostMapping("/send/{patientId}")
-	public HeadersBuilder<?> sendData(@PathVariable String patientId) {
+	public ResponseEntity<?> sendData(@PathVariable String patientId) {
 		service.sendData(patientId);
-		return ResponseEntity.noContent();
+		return ResponseEntity.noContent().build();
 	}
 
 }
