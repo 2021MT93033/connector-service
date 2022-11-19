@@ -48,7 +48,7 @@ public interface ConnectorService {
 
 	public List<OxygenLevel> getAllOxygenLevelRecords();
 
-	public void sendData(String patientId);
+	public void sendData(String patientId, boolean connectToEdge);
 
 	public SleepTracking createSleepTrackingRecord(SleepTracking sleepTracking);
 

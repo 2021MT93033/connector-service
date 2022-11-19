@@ -4,6 +4,7 @@
 package com.bits.assignment.universalt10.connector.connectorservice.service.impl;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -408,33 +409,40 @@ public class ConnectorServiceImpl implements ConnectorService {
 	}
 
 	@Override
-	public void sendData(String patientId) {
-		String url = "http://localhost:9007/edge-patient-monitoring-service/monitor";
+	public void sendData(String patientId, boolean connectToEdge) {
+		String url = "";
+		String url1 = "http://localhost:9007/edge-patient-monitoring-service/monitor";
+		String url2 = gatewayURL + "/patient-monitoring-service/monitor";
+		url = url2;
+		if (connectToEdge) {
+			url = url1;
+		}
 		PatientData data = new PatientData();
 		data.setPatientId(patientId);
+		data.setReadingDate(new Date());
 		List<BloodPressure> list = bloodPressureRepository.findByPatientId(patientId);
 		if (list != null && !list.isEmpty()) {
-			data.setBloodPressure(list.get(0).getValue());
+			data.setBloodPressure(list.get(list.size() - 1).getValue());
 		}
 		List<OxygenLevel> oxylist = oxygenLevelRepository.findByPatientId(patientId);
 		if (oxylist != null && !oxylist.isEmpty()) {
-			data.setOxygenLevel(oxylist.get(0).getValue());
+			data.setOxygenLevel(oxylist.get(oxylist.size() - 1).getValue());
 		}
 		List<BMI> bmilist = bmiRepository.findByPatientId(patientId);
 		if (bmilist != null && !bmilist.isEmpty()) {
-			data.setBmi(bmilist.get(0).getValue());
+			data.setBmi(bmilist.get(bmilist.size() - 1).getValue());
 		}
 		List<StepCount> steplist = stepCountRepository.findByPatientId(patientId);
 		if (steplist != null && !steplist.isEmpty()) {
-			data.setStepCount(steplist.get(0).getValue());
+			data.setStepCount(steplist.get(steplist.size() - 1).getValue());
 		}
 		List<SleepTracking> sleeplist = sleepTrackingRepository.findByPatientId(patientId);
 		if (sleeplist != null && !sleeplist.isEmpty()) {
-			data.setSleepTracking(sleeplist.get(0).getDeepSleepHours() + "");
+			data.setSleepTracking(sleeplist.get(sleeplist.size() - 1).getDeepSleepHours() + "");
 		}
 		List<Temperature> templist = temperatureRepository.findByPatientId(patientId);
 		if (templist != null && !templist.isEmpty()) {
-			data.setTemperature(templist.get(0).getValue());
+			data.setTemperature(templist.get(templist.size() - 1).getValue());
 		}
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);

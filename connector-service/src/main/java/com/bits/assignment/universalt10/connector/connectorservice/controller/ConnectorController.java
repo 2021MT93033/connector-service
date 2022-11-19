@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bits.assignment.universalt10.connector.connectorservice.model.BMI;
@@ -381,8 +382,8 @@ public class ConnectorController {
 	}
 
 	@PostMapping("/send/{patientId}")
-	public ResponseEntity<?> sendData(@PathVariable String patientId) {
-		service.sendData(patientId);
+	public ResponseEntity<?> sendData(@PathVariable String patientId, @RequestParam boolean connectToEdge) {
+		service.sendData(patientId, connectToEdge);
 		return ResponseEntity.noContent().build();
 	}
 

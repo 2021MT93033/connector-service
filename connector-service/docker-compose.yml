@@ -1,0 +1,7 @@
+version : "3"
+services :
+ connector-service:
+  image: connector-service:1.0
+  container_name: connector-service
+  ports:
+    - 9005:9005
